@@ -1,0 +1,36 @@
+name: Build Maestro Android
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: android-actions/setup-android@v3
+      - run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0' 'ndk;27.2.12479018'
+      - name: Build native local model engine
+        run: bash scripts/build-native.sh
+        env:
+          ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/27.2.12479018
+      - name: Verify bounded OpenClaw plugin
+        run: bash scripts/test.sh
+      - name: Compile and sign personal test APK
+        run: bash scripts/build-apk.sh
+        env:
+          ANDROID_JAR: /usr/local/lib/android/sdk/platforms/android-35/android.jar
+          BUILD_TOOLS: /usr/local/lib/android/sdk/build-tools/35.0.0
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Maestro-Android-test
+          path: |
+            build/Maestro-v0.1.0.apk
+            build/Maestro-v0.1.0.apk.sha256
+          retention-days: 30

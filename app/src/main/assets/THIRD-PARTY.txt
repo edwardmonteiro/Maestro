@@ -1,0 +1,7 @@
+llama.cpp — MIT — https://github.com/ggml-org/llama.cpp
+Commit: 836d57176dc699a726c55418e4f96b8ca628e1bf
+The complete MIT notice is in LLAMA-LICENSE.txt.
+Qwen3 1.7B — Apache 2.0 — https://huggingface.co/Qwen/Qwen3-1.7B
+Quantized weights by Unsloth: https://huggingface.co/unsloth/Qwen3-1.7B-GGUF
+Weights are downloaded separately by the user, checked against a pinned SHA-256.
+OpenClaw is not bundled. The Maestro plugin is original code.

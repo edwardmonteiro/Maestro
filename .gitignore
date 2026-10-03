@@ -1,0 +1,9 @@
+/build/
+/.gradle/
+/app/src/main/jniLibs/
+/toolchain/
+*.keystore
+*.jks
+*.apk
+local.properties
+.env

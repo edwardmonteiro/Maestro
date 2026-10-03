@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import plugin from '../openclaw-plugin/index.js';
+const tools=[];let request;
+plugin.register({pluginConfig:{bridgeToken:'t'.repeat(64)},registerTool:(t,options)=>{assert.equal(options.optional,true);tools.push(t);}});
+assert.equal(tools.length,4);
+globalThis.fetch=async(url,options)=>{request={url,options};return {ok:true,json:async()=>({status:'pending_user_review',executed:false})};};
+const action=tools.find(t=>t.name==='maestro_request_action');
+await assert.rejects(async()=>action.execute('1',{action:'shell',value:'ls'}));
+let result=await action.execute('2',{action:'share',value:'Test only'});
+assert.equal(result.details.executed,false);assert.equal(request.url,'http://127.0.0.1:19421/action');assert.equal(request.options.redirect,'error');
+assert.equal(JSON.parse(request.options.body).value,'Test only');
+const local=tools.find(t=>t.name==='maestro_local_think');await local.execute('3',{prompt:'resuma'});
+assert.equal(JSON.parse(request.options.body).stream,false);assert.equal(request.url,'http://127.0.0.1:19421/v1/chat/completions');
+const missing=[];plugin.register({pluginConfig:{},registerTool:t=>missing.push(t)});await assert.rejects(()=>missing[0].execute(),/token/);
+console.log('PASS: plugin contracts, bounded actions, local-only endpoint, required token, honest pending status');

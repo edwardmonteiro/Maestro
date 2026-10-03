@@ -1,0 +1,8 @@
+{
+ "id":"maestro-phone","name":"Maestro Phone","description":"Local Android notes, reviewed actions and Qwen inference.",
+ "categories":["other"],"contracts":{"tools":["maestro_status","maestro_save_note","maestro_request_action","maestro_local_think"]},
+ "activation":{"onStartup":true},
+ "toolMetadata":{"maestro_status":{"optional":true},"maestro_save_note":{"optional":true},"maestro_request_action":{"optional":true},"maestro_local_think":{"optional":true}},
+ "configSchema":{"type":"object","additionalProperties":false,"properties":{"bridgeToken":{"type":"string"}}},
+ "uiHints":{"bridgeToken":{"label":"Maestro bridge token","sensitive":true}}
+}
