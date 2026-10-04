@@ -1,3 +1,20 @@
+# Correção 0.2.1
+
+Relatos recebidos: RUN_COMMAND negado por allow-external-apps ausente; curl com
+símbolo OpenSSL não encontrado após atualização parcial de dependências.
+
+Validação da correção:
+- Regressão JVM: permissão concedida + bootstrap incompleto continua no fluxo manual.
+- Shell com apt/curl simulados: curl inicialmente quebrado, reparo por upgrade,
+  alternativa de reinstalação e falha do apt impedindo o download.
+- APK com versionCode 3, mesmo certificado da 0.2.0; testes anteriores mantidos.
+- Não executado no Samsung físico. Testes de shell simulam a falha de dependências;
+  não afirmam ter atualizado o Termux do usuário neste ambiente.
+
+Fontes oficiais:
+- https://github.com/termux/termux-app/wiki/RUN_COMMAND-Intent
+- https://github.com/termux/termux-packages/wiki/Termux-execution-environment
+
 # Maestro 0.2.0 — validação
 
 ## Verificado neste ambiente

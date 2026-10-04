@@ -15,8 +15,10 @@ trap 'progress "Falha na instalação. Veja a mensagem no Termux e tente novamen
 progress 'Preparando dependências'
 command -v termux-wake-lock >/dev/null && termux-wake-lock || true
 export DEBIAN_FRONTEND=noninteractive
-pkg update -y
-pkg install -y git curl python tar
+apt-get update
+apt-get -y -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold dist-upgrade
+apt-get -y -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold install git curl python tar
+curl --version >/dev/null
 printf '%s' "$MAESTRO_BUNDLE" | base64 -d > "$MAESTRO_DIR/pairing.json"
 unset MAESTRO_BUNDLE
 python - "$MAESTRO_DIR" <<'PY'
@@ -48,6 +50,7 @@ if [ -f "$HOME/.bashrc" ]; then source "$HOME/.bashrc" || true; fi
 progress 'Configurando Astra e ferramentas locais'
 node "$MAESTRO_DIR/configure.cjs" "$MAESTRO_DIR/pairing.json"
 command -v termux-reload-settings >/dev/null && termux-reload-settings || true
+curl --max-time 5 -fsS -H "Authorization: Bearer $MAESTRO_BRIDGE" -H 'Content-Type: application/json' -d '{"phase":"Integração Termux preparada","bootstrap_complete":true}' http://127.0.0.1:19421/setup/status >/dev/null
 openclaw --profile maestro config validate
 progress 'Iniciando Gateway'
 # Check for an already-running, authenticated Maestro gateway; never kill unrelated services.

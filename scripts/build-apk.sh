@@ -23,6 +23,6 @@ cp "$OUT/dex/classes.dex" "$OUT/apk/"
 # Personal test signing. Keep keystore outside git; CI signs with its configured keystore.
 KEYSTORE=${MAESTRO_KEYSTORE:-$ROOT/../maestro-test.keystore}
 if [ ! -f "$KEYSTORE" ]; then keytool -genkeypair -keystore "$KEYSTORE" -storepass android -keypass android -alias maestro -keyalg RSA -keysize 3072 -validity 10000 -dname 'CN=Maestro Personal Test' >/dev/null 2>&1; fi
-"$BUILD_TOOLS/apksigner" sign --ks "$KEYSTORE" --ks-pass pass:android --key-pass pass:android --out "$OUT/Maestro-v0.2.0.apk" "$OUT/aligned.apk"
-"$BUILD_TOOLS/apksigner" verify --verbose "$OUT/Maestro-v0.2.0.apk"
-sha256sum "$OUT/Maestro-v0.2.0.apk" > "$OUT/Maestro-v0.2.0.apk.sha256"
+"$BUILD_TOOLS/apksigner" sign --ks "$KEYSTORE" --ks-pass pass:android --key-pass pass:android --out "$OUT/Maestro-v0.2.1.apk" "$OUT/aligned.apk"
+"$BUILD_TOOLS/apksigner" verify --verbose "$OUT/Maestro-v0.2.1.apk"
+sha256sum "$OUT/Maestro-v0.2.1.apk" > "$OUT/Maestro-v0.2.1.apk.sha256"

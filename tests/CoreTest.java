@@ -14,6 +14,13 @@ public class CoreTest {
   try(Bridge b=new Bridge("permanent",pair,(path,body)->{if(path.equals("/setup/install.sh")){pair.consume();return new JSONObject().put("script","echo fixture");}return new JSONObject().put("ok",true);})){check(request(ticket,null,"/health",null)==403,"setup credential scoped");check(request(ticket,"https://example.com","/setup/install.sh",null)==403,"setup disallows browser");check(request(ticket,null,"/setup/install.sh",null)==200,"one-time delivery");check(request(ticket,null,"/setup/install.sh",null)==403,"replay rejected");check(request("permanent",null,"/health",null)==200,"bridge survives pairing");}
   JSONObject reasoning=Reasoning.request("Teste",true);check(reasoning.getString("model").equals("gpt-6-astra"),"current model");check(reasoning.getJSONObject("reasoning").getString("effort").equals("high"),"high reasoning");check(!reasoning.has("temperature")&&!reasoning.has("top_p"),"no incompatible parameters");check(reasoning.getJSONArray("tools").getJSONObject(0).getString("type").equals("web_search"),"web tool");check(!Reasoning.request("offline",false).has("tools"),"search disabled");
   rejected=false;try{Reasoning.output(new JSONObject().put("status","incomplete"));}catch(Exception e){rejected=true;}check(rejected,"incomplete response rejected");
+  check(!TermuxSetup.canAutomate(true,false),"Android permission alone must not bypass manual bootstrap");
+  check(!TermuxSetup.canAutomate(false,true),"bootstrap does not grant Android permission");
+  check(!TermuxSetup.canAutomate(false,false),"fresh installation manual");
+  check(TermuxSetup.canAutomate(true,true),"automation only after both requirements");
+  String preflight="apt-get update\napt-get -y dist-upgrade\ncurl --version";
+  String command=TermuxSetup.command(preflight,"a".repeat(64));check(command.indexOf("dist-upgrade")<command.indexOf("curl --max-time"),"repair before fetch");check(command.startsWith("(\nset -euo pipefail"),"fail closed on repair errors");
+  System.out.println("PASS: granted-permission/unfinished-bootstrap regression and dependency repair ordering");
   System.out.println("PASS: plan validation, real HTTP bridge, scoped one-time pairing, replay/origin rejection, reasoning request");
  }
 }

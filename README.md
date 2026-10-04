@@ -1,4 +1,4 @@
-# Maestro Android · 0.2.0
+# Maestro Android · 0.2.1
 
 Assistente pessoal para Android ARM64: GPT-6 Astra com raciocínio alto na OpenAI,
 execução OpenClaw no Termux e Qwen3 1.7B opcional para tarefas offline.
@@ -23,6 +23,20 @@ assinante; preserva a chave criptografada, as notas e o modelo já baixado.
 A confirmação da instalação do Termux e a primeira colagem não são silenciosas.
 Sem OpenClaw, **Astra + ações Android** já pode pesquisar e planejar. Qwen pode ser
 baixado depois; seu arquivo de 1,11 GB não bloqueia os outros modos.
+
+## Correção 0.2.1
+
+- A permissão Android não implica `allow-external-apps=true`. A primeira execução
+  sempre exige colagem no Termux. Automação só é liberada após confirmação do
+  instalador autenticado; há opção manual para recuperação.
+- O comando copiado executa atualização completa via `apt-get` antes de usar
+  `curl`. Corrige instalações parciais e inclui reinstalação de curl/libcurl/OpenSSL
+  caso o executável continue quebrado. Não usa `pkg` durante esse reparo, pois
+  `pkg` depende do próprio curl. A atualização afeta os pacotes do Termux.
+- Comandos automáticos possuem callback privado para receber falhas do Termux.
+  Mensagens brutas, stdout e tokens não são persistidos pelo callback.
+- Na atualização, gere um novo comando em Preparar OpenClaw; comandos anteriores
+  têm pareamento temporário e não incluem o reparo.
 
 ## O que mudou
 
