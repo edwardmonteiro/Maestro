@@ -1,11 +1,48 @@
-# Maestro Android · 0.2.1
+# Maestro Android · 0.3.0
 
 Assistente pessoal para Android ARM64: GPT-6 Astra com raciocínio alto na OpenAI,
 execução OpenClaw no Termux e Qwen3 1.7B opcional para tarefas offline.
 
+## Meu celular · novidade 0.3.0
+
+Abra **Meu celular** no topo do app. Esta central é local e não depende do Termux.
+Acesso desligado por padrão, com ativação separada para cada fonte:
+
+- **Notificações:** NotificationListenerService guarda apenas novas notificações;
+  ignora serviços contínuos, resumos de grupos, notificações próprias e downloads.
+  Atualizações da mesma chave substituem o registro. Até 500 itens; filtros por app.
+- **Meu dia:** UsageStatsManager recupera eventos desde a ativação, ao abrir/atualizar
+  a central. Reconstrói sessões conservadoras, mostra apps, tela e desbloqueios,
+  total diário e barras dos cinco apps principais. Sem leitura de telas, GPS ou
+  Accessibility. Eventos técnicos de notificações não contam como atividade humana.
+- **Agenda:** somente READ_CALENDAR, próximos sete dias dos calendários visíveis e
+  sincronizados no Android. Consulta em memória, sem alterar compromissos.
+- **Gmail:** IMAP/TLS direto para imap.gmail.com:993, senha de app e verificação em
+  duas etapas. Não exige projeto Google. Lista 20 mensagens da INBOX e lê o texto
+  sob demanda, sem marcar como lido, sem SMTP e sem baixar anexos. A senha de app
+  tem permissões amplas; a restrição de leitura é aplicada pelo código do Maestro.
+  Até 6.000 caracteres por corpo. Rascunhos locais abrem o cliente de e-mail para
+  revisão/envio manual; não são gravados como rascunhos remotos pelo Maestro.
+
+Notificações, uso e cache de e-mails são criptografados com AES-GCM e chave Android
+Keystore; backup Android desativado. Retenção de até sete dias, aplicada durante
+uso/coleta, sem promessa de limpeza agendada quando o processo está encerrado.
+**Pausar e apagar dados pessoais** limpa as cópias, credencial Gmail e desativa
+as três fontes. Permissões do Android e senha de app podem ser revogadas à parte.
+
+A central chama apenas **Qwen3 local**, se já baixado em Motores. Não envia dados
+pessoais à OpenAI ou ao gateway OpenClaw. O assistente desta conversa também não
+recebe acesso ao celular. Os modos Astra anteriores continuam separados.
+
+Limites: notificações antigas não são recuperadas, conteúdo sensível pode estar
+oculto e Samsung pode suspender o listener. O histórico de uso do Android tem
+retenção limitada; abra a central regularmente. As durações são estimativas de
+primeiro plano, não comprovam atenção e podem divergir em tela dividida.
+Sem dados de exemplo disfarçados de dados reais.
+
 ## Instalar e usar
 
-Atualize o APK por cima da 0.1.0. A versão fornecida ao usuário usa a mesma chave
+Atualize o APK por cima da versão já instalada. A versão fornecida ao usuário usa a mesma chave
 assinante; preserva a chave criptografada, as notas e o modelo já baixado.
 
 1. Em **Motores**, informe sua chave uma vez, ou reutilize a chave salva, e toque

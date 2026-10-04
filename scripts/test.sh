@@ -13,3 +13,7 @@ bash -n "$ROOT/app/src/main/assets/setup/bootstrap.sh"
 
 bash -n "$ROOT/app/src/main/assets/setup/preflight.sh"
 python3 "$ROOT/tests/PreflightTest.py"
+bash "$ROOT/scripts/mail-deps.sh"
+PERSONAL_CP="$ROOT/build/tests/json.jar:$ROOT/build/deps/android-mail.jar:$ROOT/build/deps/android-activation.jar"
+javac -cp "$PERSONAL_CP" -d "$ROOT/build/tests" "$ROOT/app/src/main/java/br/com/maestro/UsageTimeline.java" "$ROOT/app/src/main/java/br/com/maestro/GmailReader.java" "$ROOT/tests/PersonalTest.java"
+java -cp "$ROOT/build/tests:$PERSONAL_CP" br.com.maestro.PersonalTest

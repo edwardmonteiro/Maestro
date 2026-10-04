@@ -55,3 +55,22 @@ e o teste de Gateway exige a execução de maestro_status através do OpenClaw.
 A política de bateria/segundo plano do Samsung pode interromper instalação ou
 Gateway. Sem alegação de desempenho, autonomia ou estabilidade medida no aparelho.
 A biblioteca llama.cpp ARM64 foi reaproveitada, sem alterações, do APK 0.1.0.
+
+
+## 0.3.0 — central pessoal local
+
+- Build Android API 36/target35; Java/D8/resources and v3 signing verified.
+- Native llama library unchanged from previous APK; same signing certificate.
+- Existing tests for setup, bridge, pairing and plugin still pass.
+- PersonalTest exercises duplicate resumes, unrelated pauses, screen-off,
+  window clipping, same-app activity merging, collection boundaries and missing
+  starts. MIME tests cover UTF-8, nested alternatives, attachment exclusion,
+  inert HTML, bounded body output and TLS hostname/PEEK settings.
+- Gmail uses Folder.READ_ONLY and IMAP only. No SMTP, no mailbox mutation.
+- PersonalActivity has no cloud model call and personal stores are not exposed
+  through the HTTP bridge. Notification binding requires Android's signature
+  permission; the personal Activity is not exported.
+- Physical Samsung permission screens, background capture, Calendar provider,
+  Google app-password login and local-model summaries have NOT been tested here.
+  No user credential or mailbox was used for these checks.
+- Retention is enforced during collection/open, not by a periodic background job.
