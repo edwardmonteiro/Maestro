@@ -3,13 +3,12 @@ import org.json.*;
 final class Planner {
  static JSONObject openai(String key,String model,String prompt,boolean search,Net.Job job)throws Exception{
   if(key.isEmpty())throw new IllegalStateException("Configure sua chave OpenAI em Motores.");
-  JSONObject req=new JSONObject().put("model",model).put("store",false).put("reasoning",new JSONObject().put("effort","low")).put("max_output_tokens",5000).put("instructions",Plan.instructions()).put("input",prompt).put("text",new JSONObject().put("format",new JSONObject().put("type","json_schema").put("name","maestro_plan").put("strict",true).put("schema",Plan.schema())));
-  if(search)req.put("tools",new JSONArray().put(new JSONObject().put("type","web_search"))).put("tool_choice","required");
+  JSONObject req=Reasoning.request(prompt,search);
   JSONObject result=Net.json("https://api.openai.com/v1/responses",key,req,job);
   if(!result.optString("status","completed").equals("completed"))throw new IllegalStateException("Resposta interrompida. Tente um pedido menor.");
   StringBuilder out=new StringBuilder();JSONArray citations=new JSONArray();JSONArray items=result.optJSONArray("output");boolean searched=false;
   if(items!=null)for(int i=0;i<items.length();i++){JSONObject item=items.getJSONObject(i);if(item.optString("type").equals("web_search_call")&&item.optString("status").equals("completed"))searched=true;JSONArray parts=item.optJSONArray("content");if(parts==null)continue;for(int k=0;k<parts.length();k++){JSONObject p=parts.getJSONObject(k);if(p.optString("type").equals("refusal"))throw new IllegalStateException(p.optString("refusal","Pedido nao atendido"));out.append(p.optString("text"));JSONArray ann=p.optJSONArray("annotations");if(ann!=null)for(int h=0;h<ann.length();h++){JSONObject an=ann.getJSONObject(h);if(an.optString("type").equals("url_citation"))citations.put(new JSONObject().put("title",an.optString("title","Fonte")).put("url",an.optString("url")));}}}
-  JSONObject plan=Plan.parse(out.toString());plan.put("sources",citations).put("searched",searched).put("engine","OpenAI · "+model);JSONObject usage=result.optJSONObject("usage");if(usage!=null)plan.put("usage",usage);return plan;
+  JSONObject plan=Plan.parse(out.toString());plan.put("sources",citations).put("searched",searched).put("engine","GPT-6 Astra · raciocínio alto");JSONObject usage=result.optJSONObject("usage");if(usage!=null)plan.put("usage",usage);return plan;
  }
  static JSONObject openclaw(String token,String prompt,String session,Net.Job job)throws Exception{
   if(token.isEmpty())throw new IllegalStateException("Configure o token do OpenClaw em Motores.");

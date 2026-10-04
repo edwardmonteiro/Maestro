@@ -31,6 +31,6 @@ jobs:
         with:
           name: Maestro-Android-test
           path: |
-            build/Maestro-v0.1.0.apk
-            build/Maestro-v0.1.0.apk.sha256
+            build/Maestro-v0.2.0.apk
+            build/Maestro-v0.2.0.apk.sha256
           retention-days: 30

@@ -7,3 +7,5 @@
 *.apk
 local.properties
 .env
+
+/app/src/main/assets/setup/plugin/
