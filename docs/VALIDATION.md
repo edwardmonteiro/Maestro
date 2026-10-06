@@ -74,3 +74,28 @@ A biblioteca llama.cpp ARM64 foi reaproveitada, sem alterações, do APK 0.1.0.
   Google app-password login and local-model summaries have NOT been tested here.
   No user credential or mailbox was used for these checks.
 - Retention is enforced during collection/open, not by a periodic background job.
+
+## 0.4.0 — OpenDots server companion
+
+- APK compiled using API 36 / target 35. Signature verified against the previous
+  release: SHA-256 `81317bd83cfe06349b002543482b4ed9492313d78b5abc55096746d11ec67c40`.
+- Full Android/core/plugin/setup/personal suite passed. ServerTest covers HTTPS origin
+  and token validation, native REST sequencing, thread binding, explicit recurrence,
+  setup gating, no automatic POST retry, redirect blocking and redacted API errors.
+- Pinned OpenDots source compiled successfully with Node 24. All 165 tests in 36
+  files passed, including the added Astra Responses test. The new fixture exercises
+  a real page tool through the agent loop, tool-result continuation and preservation
+  of encrypted reasoning, with mocked provider SSE responses. It verifies high
+  effort, max_output_tokens=25000, store=false and absence of unsupported sampling fields.
+- Local socket tests were run with NODE_USE_ENV_PROXY=0 because this environment's
+  proxy intercepts the upstream loopback HTTP fixtures. No external model was called.
+- The actual compiled server passed HTTP smoke checks: authenticated APIs, denied
+  requests without token, rejected cross-origin requests, missing-key setup gating,
+  SQLite memory persistence after process restart and serving the production frontend.
+- render.yaml validated against the current official Render JSON Schema.
+- Docker image build and hosted Render deployment were not executed locally (no
+  Docker engine or connected hosting account). A GitHub workflow builds the image.
+- Physical Samsung UI, real CopilotKit/OpenAI credentials and completed live model
+  tasks remain unverified. Health/metadata checks do not prove model access.
+- No Gmail/WhatsApp sending, remote personal-data sync, Android screen control,
+  push notification delivery, voice or OpenBot provisioning is included in 0.4.0.

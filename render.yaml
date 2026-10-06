@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: maestro-opendots
+    runtime: docker
+    plan: 1c-2g
+    dockerfilePath: ./server/Dockerfile
+    dockerContext: ./server
+    healthCheckPath: /healthz
+    autoDeployTrigger: 'off'
+    disk:
+      name: maestro-data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: OWNER_TOKEN
+        generateValue: true
+      - key: OWNER_ID
+        value: maestro-owner
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: INTELLIGENCE_API_KEY
+        sync: false
+      - key: OPENAI_MODEL
+        value: gpt-6-astra
+      - key: OPENAI_BASE_URL
+        value: https://api.openai.com/v1
+      - key: MAESTRO_TASK_TIMEOUT_MS
+        value: '600000'
+      - key: WEB_SEARCH_PROVIDER
+        value: parallel

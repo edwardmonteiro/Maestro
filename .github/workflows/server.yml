@@ -1,0 +1,31 @@
+name: Verify Maestro OpenDots
+on:
+  push:
+    branches: [main]
+    paths: ['server/**', 'render.yaml', '.github/workflows/server.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Fetch pinned OpenDots source
+        run: |
+          git clone https://github.com/CopilotKit/OpenDots.git /tmp/maestro-opendots
+          git -C /tmp/maestro-opendots checkout c2569bb6a13a22e565cf3eb791c62267d06babb1
+          node server/patch-opendots.mjs /tmp/maestro-opendots
+      - name: Compile and test
+        working-directory: /tmp/maestro-opendots
+        run: |
+          npm ci --no-audit --no-fund
+          npm run build
+          npm test
+      - name: Verify real server startup and persistence without credentials
+        run: node server/smoke.mjs /tmp/maestro-opendots
+      - name: Verify deployment image builds
+        run: docker build --tag maestro-opendots:test server

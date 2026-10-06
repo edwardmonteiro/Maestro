@@ -17,3 +17,5 @@ bash "$ROOT/scripts/mail-deps.sh"
 PERSONAL_CP="$ROOT/build/tests/json.jar:$ROOT/build/deps/android-mail.jar:$ROOT/build/deps/android-activation.jar"
 javac -cp "$PERSONAL_CP" -d "$ROOT/build/tests" "$ROOT/app/src/main/java/br/com/maestro/UsageTimeline.java" "$ROOT/app/src/main/java/br/com/maestro/GmailReader.java" "$ROOT/tests/PersonalTest.java"
 java -cp "$ROOT/build/tests:$PERSONAL_CP" br.com.maestro.PersonalTest
+javac -cp "$ROOT/build/tests/json.jar" -d "$ROOT/build/tests" "$ROOT/app/src/main/java/br/com/maestro/ServerClient.java" "$ROOT/app/src/main/java/br/com/maestro/Net.java" "$ROOT/tests/ServerTest.java"
+java -cp "$ROOT/build/tests:$ROOT/build/tests/json.jar" br.com.maestro.ServerTest

@@ -1,7 +1,24 @@
-# Maestro Android · 0.3.0
+# Maestro Android · 0.4.0
 
 Assistente pessoal para Android ARM64: GPT-6 Astra com raciocínio alto na OpenAI,
 execução OpenClaw no Termux e Qwen3 1.7B opcional para tarefas offline.
+
+## Servidor · novidade 0.4.0
+
+Abra **Servidor · tarefas autônomas** para usar OpenDots hospedado com GPT-6 Astra
+e raciocínio alto. Envie tarefas avulsas ou recorrentes, acompanhe resultados e
+pause/cancele pelo APK. As tarefas continuam no servidor ao fechar o app.
+
+[Instalar servidor na Render](https://render.com/deploy?repo=https%3A%2F%2Fgithub.com%2Fedwardmonteiro%2FMaestro)
+· [Setup completo e Docker](server/README.md)
+
+Requer uma conta de hospedagem e chaves OpenAI/CopilotKit Intelligence. O token
+do servidor é gerado pela hospedagem e salvo no Android Keystore. O setup mostra
+o custo antes de contratar. Nenhum servidor de produção foi provisionado com este código.
+
+Gmail, notificações e agenda continuam locais. Esta versão não implementa envio
+autônomo de e-mail/WhatsApp nem controle de tela; o servidor recebe apenas as tarefas
+digitadas na nova central. Não há push de resultados; abra a central para acompanhar.
 
 ## Meu celular · novidade 0.3.0
 
